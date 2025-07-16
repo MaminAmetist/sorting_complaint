@@ -4,14 +4,12 @@ from datetime import datetime
 from sqlalchemy.orm import Session
 import uvicorn
 
-
 from models import Complaint, engine, SessionLocal, Base
 from sentiment import analyze_sentiment
 from geo import get_location
 from category import get_complaint_category
 
-
-app = FastAPI()
+app = FastAPI(json=True)
 
 Base.metadata.create_all(bind=engine)
 
@@ -59,6 +57,12 @@ def create_complaint(complaint: ComplaintRequest, request: Request):
         "category": new_complaint.category,
         'location': location
     }
+
+
+@app.get('/complaints')
+def get_complaints():
+    db: Session = SessionLocal()
+    return db.query(Complaint).all()
 
 
 if __name__ == '__main__':
