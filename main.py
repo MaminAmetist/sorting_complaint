@@ -9,7 +9,7 @@ from sentiment import analyze_sentiment
 from geo import get_location
 from category import get_complaint_category
 
-app = FastAPI(json=True)
+app = FastAPI()
 
 Base.metadata.create_all(bind=engine)
 
